@@ -1,0 +1,11 @@
+n_distinct_actions = 10  # number of distinct actions (e.g. 'action_0')
+n_customers = 1000  # number of distinct customers
+n_fraudsters = 5  # number of distinct fraudsters
+n_sessions = 2000  # number of sessions
+n_legit_recipients = 1000  # number of distinct legit recipients
+n_fraud_recipients = 100  # number of distinct fraud recipients
+fraud_session_rate = 0.01  # approx proportion of sessions that are fraud
+start_date = '2022-01-01'  # start date of sessions
+end_date = '2023-01-01'  # end date of sessions
+data_output_dir = './mock_data/data'  # path to directory where data will be saved
+save_formats = ['json']  # formats to save data in ('csv', 'json', 'json_full')
