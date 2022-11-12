@@ -3,7 +3,7 @@ from numpy.random import choice, randint, uniform, normal, exponential
 import random
 import string
 from datetime import datetime, timedelta
-from mock_data.config import n_distinct_actions, n_customers,  start_date, end_date,\
+from config import n_distinct_actions, n_customers,  start_date, end_date,\
     n_legit_recipients, n_fraud_recipients
 
 

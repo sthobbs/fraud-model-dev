@@ -5,13 +5,12 @@ import json
 import os
 from tqdm import tqdm
 from mock_data.person import Customer, Fraudster
-from mock_data.config import n_customers, n_fraudsters, n_sessions, \
-    fraud_session_rate, data_output_dir, save_formats
+from config import n_customers, n_fraudsters, n_sessions, \
+    fraud_session_rate, data_output_dir, save_formats, seed
 from pathlib import Path
 
 
 # set seed
-seed = 123
 random.seed(seed)
 np.random.seed(seed)
 
@@ -43,7 +42,7 @@ def generate_sessions(customers, fraudsters):
 
 def flatten_sessions(sessions):
     """
-    Flatten a list of sessions into a dataframe of actions.
+    Flatten a list of sessions into a dataframe of events.
 
     Parameters
     ----------
@@ -94,25 +93,25 @@ def run():
     
     # save to csv
     if 'csv' in save_formats:
-        df.to_csv(path / "actions.csv", index=False)
+        df.to_csv(path / "events.csv", index=False)
         cust_df.to_csv(path / "customer_info.csv", index=False)
     
     # save to json with all keys on all records
     if 'json_full' in save_formats:
-        df.to_json(path / "actions_fulls.json", orient="records", lines=True)
+        df.to_json(path / "events_fulls.json", orient="records", lines=True)
         cust_df.to_json(path / "customer_info.json", orient="records", lines=True)
     
     # save to json with only keys from each record
     if 'json' in save_formats:
-        file_path = path / "actions.json"
+        file_path = path / "events.json"
         # remove file if it already exists
         if os.path.exists(file_path):
             os.remove(file_path)
         # save to json
         with open(file_path, "a") as outfile:
             for session in tqdm(sessions):
-                for action in session:
-                    json.dump(action, outfile)
+                for event in session:
+                    json.dump(event, outfile)
                     outfile.write('\n')
 
 
