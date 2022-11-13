@@ -99,7 +99,6 @@ def run():
     # save to json with all keys on all records
     if 'json_full' in save_formats:
         df.to_json(path / "events_fulls.json", orient="records", lines=True)
-        cust_df.to_json(path / "customer_info.json", orient="records", lines=True)
     
     # save to json with only keys from each record
     if 'json' in save_formats:
@@ -113,6 +112,10 @@ def run():
                 for event in session:
                     json.dump(event, outfile)
                     outfile.write('\n')
+
+    if 'json' in save_formats or 'json_full' in save_formats:
+        # save customer info table
+        cust_df.to_json(path / "customer_info.json", orient="records", lines=True)
 
 
 if __name__ == "__main__":
