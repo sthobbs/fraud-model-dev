@@ -29,11 +29,6 @@ class Logger():
             # set up formatter
             formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
-            # # set up cloud logging handler
-            # handler = CloudLoggingHandler(self.client)
-            # handler.setFormatter(formatter)
-            # self.logger.addHandler(handler)
-
             # set up console logging handler
             handler = logging.StreamHandler()
             handler.setFormatter(formatter)
