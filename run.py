@@ -1,20 +1,30 @@
 
 # from mock_data import gen_mock_data
 import mock_data.gen_mock_data
-from mock_data.config import data_output_dir
+from config import data_output_dir
 from pathlib import Path
 import os
-
-
+from gen_features import load_data, run_queries, gen_profile
 
 
 def run():
 
     # generate data if it doesn't already exist
-    data_file_path = Path(data_output_dir) / "actions.json"
-    if not os.path.exists(data_file_path):
+    if not os.path.exists(data_output_dir):
         mock_data.gen_mock_data.run()
 
+    # load data into BigQuery
+    load_data.run()
+
+    # generate transactions table
+    run_queries.run("./gen_features/sql/format")
+
+    # generate customer profile table
+    gen_profile.run()
+
+    # generate features
+    run_queries.run("./gen_features/sql/features/stage_1")
+    run_queries.run("./gen_features/sql/features/stage_2")
 
 
 
