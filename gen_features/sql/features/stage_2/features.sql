@@ -15,9 +15,9 @@ SELECT
     B.* EXCEPT (uniqueId),
     C.* EXCEPT (uniqueId),
 FROM `{project_id}.{dataset_id}.features_txn` A
-LEFT JOIN `{project_id}.{dataset_id}.features_cust_info` B
+LEFT JOIN `{project_id}.{dataset_id}.features_profile` B
     ON A.uniqueId = B.uniqueId
-LEFT JOIN `{project_id}.{dataset_id}.features_profile` C
+LEFT JOIN `{project_id}.{dataset_id}.features_cust_info` C
     ON A.uniqueId = C.uniqueId
 WHERE A.date >= '{start_date}'
     AND A.date < '{end_date}'

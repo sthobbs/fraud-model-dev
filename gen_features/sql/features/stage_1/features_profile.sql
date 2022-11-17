@@ -46,155 +46,155 @@ SELECT
     CASE WHEN P.customerId IS NULL THEN 0 ELSE 1 END AS profileRawInd,
 
     -- Amount features
-    P.amountMin AS profileRawAmountMin,
-    P.amountMax AS profileRawAmountMax,
-    P.amountAvg AS profileRawAmountAvg,
-    P.amountStd AS profileRawAmountStd,
-    P.amountPercentile10 AS profileRawAmountPercentile10,
-    P.amountPercentile25 AS profileRawAmountPercentile25,
-    P.amountPercentile50 AS profileRawAmountPercentile50,
-    P.amountPercentile75 AS profileRawAmountPercentile75,
-    P.amountPercentile90 AS profileRawAmountPercentile90,
-    SAFE_DIVIDE(T.amount - P.amountAvg, P.amountStd) AS profileAmountZScore,
+    IFNULL(P.amountMin, -1.0) AS profileRawAmountMin,
+    IFNULL(P.amountMax, -1.0) AS profileRawAmountMax,
+    IFNULL(P.amountAvg, -1.0) AS profileRawAmountAvg,
+    IFNULL(P.amountStd, -1.0) AS profileRawAmountStd,
+    IFNULL(P.amountPercentile10, -1.0) AS profileRawAmountPercentile10,
+    IFNULL(P.amountPercentile25, -1.0) AS profileRawAmountPercentile25,
+    IFNULL(P.amountPercentile50, -1.0) AS profileRawAmountPercentile50,
+    IFNULL(P.amountPercentile75, -1.0) AS profileRawAmountPercentile75,
+    IFNULL(P.amountPercentile90, -1.0) AS profileRawAmountPercentile90,
+    IFNULL(SAFE_DIVIDE(T.amount - P.amountAvg, P.amountStd), -1.0) AS profileAmountZScore,
 
     -- Time between start of session and first transaction
-    P.meanSecondsToTransaction AS profileRawMeanSecondsToTransaction,
-    P.stdSecondsToTransaction AS profileRawStdSecondsToTransaction,
-    SAFE_DIVIDE(
+    IFNULL(P.meanSecondsToTransaction, -1.0) AS profileRawMeanSecondsToTransaction,
+    IFNULL(P.stdSecondsToTransaction, -1.0) AS profileRawStdSecondsToTransaction,
+    IFNULL(SAFE_DIVIDE(
         DATETIME_DIFF(T.timestamp, T.session[OFFSET(0)].timestamp, SECOND) - P.meanSecondsToTransaction,
         P.stdSecondsToTransaction
-    ) AS profileSecondsToTransactionZScore,
+    ), -1.0) AS profileSecondsToTransactionZScore,
 
     -- Number of sessions with transactions
-    P.sessionCount AS profileRawSessionCount,
+    IFNULL(P.sessionCount, -1) AS profileRawSessionCount,
 
     -- Number of transactions
-    P.transactionCount AS profileRawTransactionCount,
+    IFNULL(P.transactionCount, -1) AS profileRawTransactionCount,
 
     -- Session action count averages
-    P.meanSessionActionCount AS profileRawMeanSessionActionCount,
-    P.meanSessionAction0Count AS profileRawMeanSessionAction0Count,
-    P.meanSessionAction1Count AS profileRawMeanSessionAction1Count,
-    P.meanSessionAction2Count AS profileRawMeanSessionAction2Count,
-    P.meanSessionAction3Count AS profileRawMeanSessionAction3Count,
-    P.meanSessionAction4Count AS profileRawMeanSessionAction4Count,
-    P.meanSessionAction5Count AS profileRawMeanSessionAction5Count,
-    P.meanSessionAction6Count AS profileRawMeanSessionAction6Count,
-    P.meanSessionAction7Count AS profileRawMeanSessionAction7Count,
-    P.meanSessionAction8Count AS profileRawMeanSessionAction8Count,
-    P.meanSessionAction9Count AS profileRawMeanSessionAction9Count,
+    IFNULL(P.meanSessionActionCount, -1.0) AS profileRawMeanSessionActionCount,
+    IFNULL(P.meanSessionAction0Count, -1.0) AS profileRawMeanSessionAction0Count,
+    IFNULL(P.meanSessionAction1Count, -1.0) AS profileRawMeanSessionAction1Count,
+    IFNULL(P.meanSessionAction2Count, -1.0) AS profileRawMeanSessionAction2Count,
+    IFNULL(P.meanSessionAction3Count, -1.0) AS profileRawMeanSessionAction3Count,
+    IFNULL(P.meanSessionAction4Count, -1.0) AS profileRawMeanSessionAction4Count,
+    IFNULL(P.meanSessionAction5Count, -1.0) AS profileRawMeanSessionAction5Count,
+    IFNULL(P.meanSessionAction6Count, -1.0) AS profileRawMeanSessionAction6Count,
+    IFNULL(P.meanSessionAction7Count, -1.0) AS profileRawMeanSessionAction7Count,
+    IFNULL(P.meanSessionAction8Count, -1.0) AS profileRawMeanSessionAction8Count,
+    IFNULL(P.meanSessionAction9Count, -1.0) AS profileRawMeanSessionAction9Count,
 
     -- Session action count standard deviations
-    P.stdSessionActionCount AS profileRawStdSessionActionCount,
-    P.stdSessionAction0Count AS profileRawStdSessionAction0Count,
-    P.stdSessionAction1Count AS profileRawStdSessionAction1Count,
-    P.stdSessionAction2Count AS profileRawStdSessionAction2Count,
-    P.stdSessionAction3Count AS profileRawStdSessionAction3Count,
-    P.stdSessionAction4Count AS profileRawStdSessionAction4Count,
-    P.stdSessionAction5Count AS profileRawStdSessionAction5Count,
-    P.stdSessionAction6Count AS profileRawStdSessionAction6Count,
-    P.stdSessionAction7Count AS profileRawStdSessionAction7Count,
-    P.stdSessionAction8Count AS profileRawStdSessionAction8Count,
-    P.stdSessionAction9Count AS profileRawStdSessionAction9Count,
+    IFNULL(P.stdSessionActionCount, -1.0) AS profileRawStdSessionActionCount,
+    IFNULL(P.stdSessionAction0Count, -1.0) AS profileRawStdSessionAction0Count,
+    IFNULL(P.stdSessionAction1Count, -1.0) AS profileRawStdSessionAction1Count,
+    IFNULL(P.stdSessionAction2Count, -1.0) AS profileRawStdSessionAction2Count,
+    IFNULL(P.stdSessionAction3Count, -1.0) AS profileRawStdSessionAction3Count,
+    IFNULL(P.stdSessionAction4Count, -1.0) AS profileRawStdSessionAction4Count,
+    IFNULL(P.stdSessionAction5Count, -1.0) AS profileRawStdSessionAction5Count,
+    IFNULL(P.stdSessionAction6Count, -1.0) AS profileRawStdSessionAction6Count,
+    IFNULL(P.stdSessionAction7Count, -1.0) AS profileRawStdSessionAction7Count,
+    IFNULL(P.stdSessionAction8Count, -1.0) AS profileRawStdSessionAction8Count,
+    IFNULL(P.stdSessionAction9Count, -1.0) AS profileRawStdSessionAction9Count,
     
     -- Session action count z-scores
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         ARRAY_LENGTH(T.session) - P.meanSessionActionCount,
         P.stdSessionActionCount
-    ) AS profileSessionActionCountZScore,
+    ), -1.0) AS profileSessionActionCountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action0') FROM UNNEST(T.session) S) - P.meanSessionAction0Count,
         P.stdSessionAction0Count
-    ) AS profileSessionAction0CountZScore,
+    ), -1.0) AS profileSessionAction0CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action1') FROM UNNEST(T.session) S) - P.meanSessionAction1Count,
         P.stdSessionAction1Count
-    ) AS profileSessionAction1CountZScore,
+    ), -1.0) AS profileSessionAction1CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action2') FROM UNNEST(T.session) S) - P.meanSessionAction2Count,
         P.stdSessionAction2Count
-    ) AS profileSessionAction2CountZScore,
+    ), -1.0) AS profileSessionAction2CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action3') FROM UNNEST(T.session) S) - P.meanSessionAction3Count,
         P.stdSessionAction3Count
-    ) AS profileSessionAction3CountZScore,
+    ), -1.0) AS profileSessionAction3CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action4') FROM UNNEST(T.session) S) - P.meanSessionAction4Count,
         P.stdSessionAction4Count
-    ) AS profileSessionAction4CountZScore,
+    ), -1.0) AS profileSessionAction4CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action5') FROM UNNEST(T.session) S) - P.meanSessionAction5Count,
         P.stdSessionAction5Count
-    ) AS profileSessionAction5CountZScore,
+    ), -1.0) AS profileSessionAction5CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action6') FROM UNNEST(T.session) S) - P.meanSessionAction6Count,
         P.stdSessionAction6Count
-    ) AS profileSessionAction6CountZScore,
+    ), -1.0) AS profileSessionAction6CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action7') FROM UNNEST(T.session) S) - P.meanSessionAction7Count,
         P.stdSessionAction7Count
-    ) AS profileSessionAction7CountZScore,
+    ), -1.0) AS profileSessionAction7CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action8') FROM UNNEST(T.session) S) - P.meanSessionAction8Count,
         P.stdSessionAction8Count
-    ) AS profileSessionAction8CountZScore,
+    ), -1.0) AS profileSessionAction8CountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'action9') FROM UNNEST(T.session) S) - P.meanSessionAction9Count,
         P.stdSessionAction9Count
-    ) AS profileSessionAction9CountZScore,
+    ), -1.0) AS profileSessionAction9CountZScore,
 
     -- Session transaction count averages
-    P.meanSessionTransactionCount AS profileRawMeanSessionTransactionCount,
-    P.meanSessionTransactionFromCheckingCount AS profileRawMeanSessionTransactionFromCheckingCount,
-    P.meanSessionTransactionFromSavingsCount AS profileRawMeanSessionTransactionFromSavingsCount,
-    P.meanSessionTransactionFromCreditCardCount AS profileRawMeanSessionTransactionFromCreditCardCount,
+    IFNULL(P.meanSessionTransactionCount, -1.0) AS profileRawMeanSessionTransactionCount,
+    IFNULL(P.meanSessionTransactionFromCheckingCount, -1.0) AS profileRawMeanSessionTransactionFromCheckingCount,
+    IFNULL(P.meanSessionTransactionFromSavingsCount, -1.0) AS profileRawMeanSessionTransactionFromSavingsCount,
+    IFNULL(P.meanSessionTransactionFromCreditCardCount, -1.0) AS profileRawMeanSessionTransactionFromCreditCardCount,
 
     -- Session transaction count standard deviations
-    P.stdSessionTransactionCount AS profileRawStdSessionTransactionCount,
-    P.stdSessionTransactionFromCheckingCount AS profileRawStdSessionTransactionFromCheckingCount,
-    P.stdSessionTransactionFromSavingsCount AS profileRawStdSessionTransactionFromSavingsCount,
-    P.stdSessionTransactionFromCreditCardCount AS profileRawStdSessionTransactionFromCreditCardCount,
+    IFNULL(P.stdSessionTransactionCount, -1.0) AS profileRawStdSessionTransactionCount,
+    IFNULL(P.stdSessionTransactionFromCheckingCount, -1.0) AS profileRawStdSessionTransactionFromCheckingCount,
+    IFNULL(P.stdSessionTransactionFromSavingsCount, -1.0) AS profileRawStdSessionTransactionFromSavingsCount,
+    IFNULL(P.stdSessionTransactionFromCreditCardCount, -1.0) AS profileRawStdSessionTransactionFromCreditCardCount,
 
     -- Session transaction count z-scores
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'transaction')
             FROM UNNEST(T.session) S) - P.meanSessionTransactionCount,
         P.stdSessionTransactionCount
-    ) AS profileSessionTransactionCountZScore,
+    ), -1.0) AS profileSessionTransactionCountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'transaction' AND S.accountType = 'checking')
             FROM UNNEST(T.session) S) - P.meanSessionTransactionFromCheckingCount,
         P.stdSessionTransactionFromCheckingCount
-    ) AS profileSessionTransactionFromCheckingCountZScore,
+    ), -1.0) AS profileSessionTransactionFromCheckingCountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'transaction' AND S.accountType = 'savings')
             FROM UNNEST(T.session) S) - P.meanSessionTransactionFromSavingsCount,
         P.stdSessionTransactionFromSavingsCount
-    ) AS profileSessionTransactionFromSavingsCountZScore,
+    ), -1.0) AS profileSessionTransactionFromSavingsCountZScore,
 
-    SAFE_DIVIDE(
+    IFNULL(SAFE_DIVIDE(
         (SELECT COUNTIF(S.action = 'transaction' AND S.accountType = 'credit_card')
             FROM UNNEST(T.session) S) - P.meanSessionTransactionFromCreditCardCount,
         P.stdSessionTransactionFromCreditCardCount
-    ) AS profileSessionTransactionFromCreditCardCountZScore,
+    ), -1.0) AS profileSessionTransactionFromCreditCardCountZScore,
 
     -- Number of times they previously sent money to this recipient
-    (SELECT COUNT(1) FROM UNNEST(P.recipients) R WHERE R.recipient = T.recipient) AS profileRecipientTxnCount,
+    IFNULL((SELECT COUNT(1) FROM UNNEST(P.recipients) R WHERE R.recipient = T.recipient), 0) AS profileRecipientTxnCount,
 
     -- Number of distinct recipients they previously sent money to
-    (SELECT COUNT(DISTINCT R.recipient) FROM UNNEST(P.recipients) R) AS profileDistinctRecipientCount,
+    IFNULL((SELECT COUNT(DISTINCT R.recipient) FROM UNNEST(P.recipients) R), 0) AS profileDistinctRecipientCount,
 
 FROM `{project_id}.{dataset_id}.transactions` T
 LEFT JOIN txn_profile_dates D

@@ -14,7 +14,7 @@ SELECT
     
     -- Non-feature fields
     CURRENT_DATE() AS generatedDate,
-    T.fraudLabel,
+    IFNULL(T.fraudLabel, 0) AS fraudLabel,
     T.uniqueId,
     T.customerId,
     T.sessionId,
@@ -23,21 +23,21 @@ SELECT
     T.action,
     
     -- Location    
-    T.longitude,
-    T.latitude,
+    IFNULL(T.longitude, 0.0) AS longitude,
+    IFNULL(T.latitude, 0.0) AS latitude,
 
     -- Amount features
-    T.amount,
-    MOD(CAST(100 * T.amount AS INT64), 100 * 1   ) / 100 AS amountMod1,
-    MOD(CAST(100 * T.amount AS INT64), 100 * 100 ) / 100 AS amountMod100,
-    MOD(CAST(100 * T.amount AS INT64), 100 * 250 ) / 100 AS amountMod250,
-    MOD(CAST(100 * T.amount AS INT64), 100 * 500 ) / 100 AS amountMod500,
-    MOD(CAST(100 * T.amount AS INT64), 100 * 1000) / 100 AS amountMod1000,
+    IFNULL(T.amount, -1.0) AS amount,
+    IFNULL(MOD(CAST(100 * T.amount AS INT64), 100 * 1   ) / 100, -1.0) AS amountMod1,
+    IFNULL(MOD(CAST(100 * T.amount AS INT64), 100 * 100 ) / 100, -1.0) AS amountMod100,
+    IFNULL(MOD(CAST(100 * T.amount AS INT64), 100 * 250 ) / 100, -1.0) AS amountMod250,
+    IFNULL(MOD(CAST(100 * T.amount AS INT64), 100 * 500 ) / 100, -1.0) AS amountMod500,
+    IFNULL(MOD(CAST(100 * T.amount AS INT64), 100 * 1000) / 100, -1.0) AS amountMod1000,
 
     -- Transaction time features
-    EXTRACT(HOUR      FROM T.timestamp) AS hour,
-    EXTRACT(DAYOFWEEK FROM T.timestamp) AS dayOfWeek,
-    EXTRACT(DAY       FROM T.timestamp) AS dayOfMonth,
+    IFNULL(EXTRACT(HOUR      FROM T.timestamp), -1) AS hour,
+    IFNULL(EXTRACT(DAYOFWEEK FROM T.timestamp), -1) AS dayOfWeek,
+    IFNULL(EXTRACT(DAY       FROM T.timestamp), -1) AS dayOfMonth,
 
     -- Account type features
     CASE WHEN T.accountType = 'checking'    THEN 1 ELSE 0 END AS accountTypeChecking,
@@ -78,7 +78,7 @@ SELECT
     (SELECT COUNT(DISTINCT S.recipient) FROM UNNEST(T.session) S
         WHERE S.action = 'transaction') AS distinctRecipientCount,
 
-    -- Number of repeated recipients (# recipients - # distinct recipients)
+    -- Number of repeated recipients (# txns - # distinct recipients)
     (SELECT COUNT(1) - COUNT(DISTINCT S.recipient) FROM UNNEST(T.session) S
         WHERE S.action = 'transaction') AS repeatedRecipientCount,
 
