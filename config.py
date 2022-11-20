@@ -7,10 +7,10 @@ n_fraudsters = 5  # number of distinct fraudsters
 n_sessions = 2000  # number of sessions
 n_legit_recipients = 1000  # number of distinct legit recipients
 n_fraud_recipients = 100  # number of distinct fraud recipients
-fraud_session_rate = 0.01  # approx proportion of sessions that are fraud
+fraud_session_rate = 0.1  # approx proportion of sessions that are fraud
 start_date = '2021-01-01'  # start date of sessions
 end_date = '2023-01-01'  # end date of sessions
-data_output_dir = './mock_data/data'  # path to directory where data will be saved
+raw_data_output_dir = './data/raw/data'  # path to directory where raw mock data will be saved
 save_formats = ['json']  # formats to save data in ('csv', 'json', 'json_full')
 seed = 123  # random seed
 
@@ -27,5 +27,13 @@ query_params = {
     'dataset_id': dataset_id,
     'start_date': start_date,
     'end_date': end_date, 
-
+    
+    # out of time train/validaiton/test split
+    'train_start_date': '2022-01-01',  
+    'train_end_date': '2022-11-01',
+    'valid_start_date': '2022-11-01',  
+    'valid_end_date': '2022-12-01',
+    'test_start_date': '2022-12-01',  
+    'test_end_date': '2023-01-01',
 }
+

@@ -4,9 +4,9 @@ import random
 import json
 import os
 from tqdm import tqdm
-from mock_data.person import Customer, Fraudster
+from data.raw.person import Customer, Fraudster
 from config import n_customers, n_fraudsters, n_sessions, \
-    fraud_session_rate, data_output_dir, save_formats, seed
+    fraud_session_rate, raw_data_output_dir, save_formats, seed
 from pathlib import Path
 
 
@@ -88,7 +88,7 @@ def run():
 
     # save to disk
     print("Saving data to disk...")
-    path = Path(data_output_dir)
+    path = Path(raw_data_output_dir)
     path.mkdir(parents=True, exist_ok=True)
     
     # save to csv

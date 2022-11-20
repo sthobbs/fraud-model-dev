@@ -3,7 +3,7 @@
 from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
-from config import data_output_dir, project_id, dataset_id, bucket_name
+from config import raw_data_output_dir, project_id, dataset_id, bucket_name
 from pathlib import Path
 from gen_features.utils import parallelize_threads
 
@@ -23,8 +23,8 @@ def load_to_BQ(table_id):
 
     # upload data to GCS
     s = Storage(project_id=project_id, bucket_name=bucket_name, logger=logger)
-    local_src_path = Path(data_output_dir) / f"{table_id}.json"
-    gcs_dest_path = f'{table_id}.json'
+    local_src_path = Path(raw_data_output_dir) / f"{table_id}.json"
+    gcs_dest_path = f'raw_data/{table_id}.json'
     s.upload_file(local_src_path, gcs_dest_path)
 
     # instantiate BigQuery API helper
