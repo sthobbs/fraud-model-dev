@@ -1,0 +1,62 @@
+[
+    {
+        "name": "fraudLabel",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "uniqueId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "customerId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "sessionId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "timestamp",
+        "type": "DATETIME",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "scoreTimestamp",
+        "type": "DATETIME",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "action",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "modelId",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "score",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "featureNamesStr",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "featureValuesStr",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    }
+]

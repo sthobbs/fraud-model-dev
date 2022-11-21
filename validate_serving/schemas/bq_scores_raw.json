@@ -1,0 +1,22 @@
+[
+    {
+        "name": "fraudLabel",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "score",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "uniqueId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "amount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    }
+]
