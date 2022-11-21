@@ -4,8 +4,7 @@ from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
 from config import project_id, dataset_id, query_params
 from pathlib import Path
-from gen_features.utils import parallelize_threads
-
+from utils.parallel import parallelize_threads
 from glob import glob
 
 # setup logger
@@ -52,6 +51,3 @@ def run(query_dir):
 
     # run queries in parallel
     parallelize_threads(run_query, paths)
-        
-
-

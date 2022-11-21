@@ -1,11 +1,10 @@
 
-# from gcp_helpers.storage import Storage
 from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
 from config import raw_data_output_dir, project_id, dataset_id, bucket_name
 from pathlib import Path
-from gen_features.utils import parallelize_threads
+from utils.parallel import parallelize_threads
 
 # setup logger
 logger = Logger(project_id).logger

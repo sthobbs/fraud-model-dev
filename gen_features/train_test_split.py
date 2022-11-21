@@ -8,19 +8,19 @@ from pathlib import Path
 from tqdm import tqdm
 from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery
-from gen_features import run_queries
+import utils.run_queries
 from config import project_id, dataset_id, bucket_name
 
 
 def run():
     
     # Split feature data into out-of-time train/validation/test datasets
-    run_queries.run("./gen_features/sql/train_test_split")
+    utils.run_queries.run("./gen_features/sql/train_test_split")
 
     # Move data from BigQuery to GCS
-    for table_id in ['train', 'validation', 'test']:
-        t = BigQuery(project_id=project_id, dataset_id=dataset_id, table_id=table_id)
-        gcs_uri = f"gs://{bucket_name}/feature_data/{table_id}_*.csv"
+    for name in ['train', 'validation', 'test']:
+        t = BigQuery(project_id=project_id, dataset_id=dataset_id, table_id=f"features_{name}")
+        gcs_uri = f"gs://{bucket_name}/feature_data/{name}_*.csv"
         t.extract_to_gcs(gcs_uri)
 
     # Move data from GCS to local disk

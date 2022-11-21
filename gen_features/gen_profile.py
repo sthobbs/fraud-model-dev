@@ -2,7 +2,7 @@
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
 from config import project_id, dataset_id, bucket_name, query_params
-from gen_features.utils import parallelize_threads
+from utils.parallel import parallelize_threads
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
