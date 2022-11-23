@@ -4,7 +4,7 @@
 # ----------------------------------
 
 version: 1.0
-description: Train XGBoost model
+description: Train XGBoost model for fraud detection 
 # version
   # required, type: str
   # example: 1.0.1
@@ -245,7 +245,7 @@ aux_fields:
 
 
 ### Other
-seed: 32
+seed: 33
 verbose: 10
 # seed
   # required, type: int (or str that casts to int)
@@ -300,7 +300,7 @@ hyperparameter_eval_metric: log_loss # average_precision, aucpr, auc, log_loss, 
 
 
 ### Cross Validation
-cross_validation: True
+cross_validation: False
 cv_folds: 5
 # cross_validation
   # not required, default False, type: boolean
@@ -316,7 +316,7 @@ cv_folds: 5
 ### Hyperparameter Tuning Algorithm
 tuning_algorithm: atpe # grid, random, tpe, or atpe.
 grid_search_n_jobs: 5
-tuning_iterations: 2 # need to specify for random, tpe, or atpe
+tuning_iterations: 50 # need to specify for random, tpe, or atpe
 # tuning_algorithm
   # not required, default None, type: string
   # valid values: grid, random, tpe, or atpe

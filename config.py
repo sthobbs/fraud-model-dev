@@ -2,9 +2,9 @@
 ##### Mock Data Configuration #####
 ###################################
 n_distinct_actions = 10  # number of distinct general actions (e.g. 'action_0')
-n_customers = 1000  # number of distinct customers
-n_fraudsters = 5  # number of distinct fraudsters
-n_sessions = 2000  # number of sessions
+n_customers = 500  # number of distinct customers
+n_fraudsters = 100  # number of distinct fraudsters
+n_sessions = 5000  # number of sessions
 n_legit_recipients = 1000  # number of distinct legit recipients
 n_fraud_recipients = 100  # number of distinct fraud recipients
 fraud_session_rate = 0.1  # approx proportion of sessions that are fraud
@@ -37,3 +37,8 @@ query_params = {
     'test_end_date': '2023-01-01',
 }
 
+
+# model serving validation config
+input_topic = 'test-input' # python will publish raw data to this topic (dataflow will subscribe)
+output_topic = 'test-output' # dataflow will publish to this topic
+output_subscription = 'test-output-sub' # python will subscribe to this subscription
