@@ -1,3 +1,4 @@
+#standardSQL
 
 /*
 Generate feature that use the monthly-updated customer profile table.
@@ -104,52 +105,52 @@ SELECT
     ), -1.0) AS profileSessionActionCountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action0') FROM UNNEST(T.session) S) - P.meanSessionAction0Count,
+        (SELECT COUNTIF(S.action = 'action_0') FROM UNNEST(T.session) S) - P.meanSessionAction0Count,
         P.stdSessionAction0Count
     ), -1.0) AS profileSessionAction0CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action1') FROM UNNEST(T.session) S) - P.meanSessionAction1Count,
+        (SELECT COUNTIF(S.action = 'action_1') FROM UNNEST(T.session) S) - P.meanSessionAction1Count,
         P.stdSessionAction1Count
     ), -1.0) AS profileSessionAction1CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action2') FROM UNNEST(T.session) S) - P.meanSessionAction2Count,
+        (SELECT COUNTIF(S.action = 'action_2') FROM UNNEST(T.session) S) - P.meanSessionAction2Count,
         P.stdSessionAction2Count
     ), -1.0) AS profileSessionAction2CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action3') FROM UNNEST(T.session) S) - P.meanSessionAction3Count,
+        (SELECT COUNTIF(S.action = 'action_3') FROM UNNEST(T.session) S) - P.meanSessionAction3Count,
         P.stdSessionAction3Count
     ), -1.0) AS profileSessionAction3CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action4') FROM UNNEST(T.session) S) - P.meanSessionAction4Count,
+        (SELECT COUNTIF(S.action = 'action_4') FROM UNNEST(T.session) S) - P.meanSessionAction4Count,
         P.stdSessionAction4Count
     ), -1.0) AS profileSessionAction4CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action5') FROM UNNEST(T.session) S) - P.meanSessionAction5Count,
+        (SELECT COUNTIF(S.action = 'action_5') FROM UNNEST(T.session) S) - P.meanSessionAction5Count,
         P.stdSessionAction5Count
     ), -1.0) AS profileSessionAction5CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action6') FROM UNNEST(T.session) S) - P.meanSessionAction6Count,
+        (SELECT COUNTIF(S.action = 'action_6') FROM UNNEST(T.session) S) - P.meanSessionAction6Count,
         P.stdSessionAction6Count
     ), -1.0) AS profileSessionAction6CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action7') FROM UNNEST(T.session) S) - P.meanSessionAction7Count,
+        (SELECT COUNTIF(S.action = 'action_7') FROM UNNEST(T.session) S) - P.meanSessionAction7Count,
         P.stdSessionAction7Count
     ), -1.0) AS profileSessionAction7CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action8') FROM UNNEST(T.session) S) - P.meanSessionAction8Count,
+        (SELECT COUNTIF(S.action = 'action_8') FROM UNNEST(T.session) S) - P.meanSessionAction8Count,
         P.stdSessionAction8Count
     ), -1.0) AS profileSessionAction8CountZScore,
 
     IFNULL(SAFE_DIVIDE(
-        (SELECT COUNTIF(S.action = 'action9') FROM UNNEST(T.session) S) - P.meanSessionAction9Count,
+        (SELECT COUNTIF(S.action = 'action_9') FROM UNNEST(T.session) S) - P.meanSessionAction9Count,
         P.stdSessionAction9Count
     ), -1.0) AS profileSessionAction9CountZScore,
 
@@ -191,7 +192,7 @@ SELECT
     ), -1.0) AS profileSessionTransactionFromCreditCardCountZScore,
 
     -- Number of times they previously sent money to this recipient
-    IFNULL((SELECT COUNT(1) FROM UNNEST(P.recipients) R WHERE R.recipient = T.recipient), 0) AS profileRecipientTxnCount,
+    IFNULL((SELECT R.txnCnt FROM UNNEST(P.recipients) R WHERE R.recipient = T.recipient LIMIT 1), 0) AS profileRecipientTxnCount,
 
     -- Number of distinct recipients they previously sent money to
     IFNULL((SELECT COUNT(DISTINCT R.recipient) FROM UNNEST(P.recipients) R), 0) AS profileDistinctRecipientCount,

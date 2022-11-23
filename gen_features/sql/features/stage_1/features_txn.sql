@@ -1,3 +1,4 @@
+#standardSQL
 
 /*
 Generate feature that only use the transactions table.
@@ -64,10 +65,10 @@ SELECT
         / ARRAY_LENGTH(T.session) AS avgActionDuration,
 
     -- Sum/avg/min/max amounts for transactions in session
-    (SELECT SUM(T.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountSum,
-    (SELECT AVG(T.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountAvg,
-    (SELECT MIN(T.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountMin,
-    (SELECT MAX(T.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountMax,
+    (SELECT SUM(S.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountSum,
+    (SELECT AVG(S.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountAvg,
+    (SELECT MIN(S.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountMin,
+    (SELECT MAX(S.amount) FROM UNNEST(T.session) S WHERE S.action = 'transaction') AS amountMax,
 
     -- Count transactions to the current recipient in session
     (SELECT COUNT(1) FROM UNNEST(T.session) S
