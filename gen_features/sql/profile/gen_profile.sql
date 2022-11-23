@@ -1,3 +1,4 @@
+#standardSQL
 
 /*
 Generate customer profile table

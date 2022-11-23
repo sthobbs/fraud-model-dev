@@ -1,3 +1,4 @@
+#standardSQL
 
 /*
 Generate table for test data features and scores from the Dataflow pipeline processes

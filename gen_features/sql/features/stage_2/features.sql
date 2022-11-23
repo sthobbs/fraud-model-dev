@@ -1,3 +1,4 @@
+#standardSQL
 
 /*
 Combine all feature tables into a single table.

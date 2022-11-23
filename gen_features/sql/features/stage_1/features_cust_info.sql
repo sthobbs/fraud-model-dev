@@ -1,3 +1,4 @@
+#standardSQL
 
 /*
 Generate feature that use the customer information table.

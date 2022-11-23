@@ -1,3 +1,4 @@
+#standardSQL
 
 /*
 Generate transaction records with session aggregated into an array
