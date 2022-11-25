@@ -135,7 +135,7 @@ class Person():
             'uniqueId': ''.join(random.choice(string.ascii_letters) for i in range(16)),
             'customerId': self.customer_id,
             'sessionId': session_id,
-            'timestamp': str(event_time),
+            'timestamp': str(event_time)[:23], # truncate milliseconds to 3 decimal places
             'action': action,
         }
         return event
