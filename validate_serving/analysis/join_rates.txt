@@ -1,0 +1,2 @@
+BQ join rate: 1.0
+DF join rate: 1.0
