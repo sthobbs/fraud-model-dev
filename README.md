@@ -1,6 +1,15 @@
-# fraud-model-dev
+# Fraud Model Development
 
-This repo contains code to develop an XGBoost fraud detection model. This model is then implemented (see https://github.com/sthobbs/fraud-model-serving) as a low-latency streaming job on GCP Dataflow using the Apache Beam Java SDK. Once the streaming job is deployed, this repo also has code to pass raw data to the model serving job (via Pub/Sub) and listen for the results. The features and scores from the Dataflow job are then compared to their BigQuery/python-generated counterparts to ensure the model was implemented correctly. Note that camelCase is often used in python and SQL to match the java pipeline field names in the associated fraud-model-serving repo.
+This repo contains code to develop an XGBoost fraud detection model. First, raw mock data is generated. Next, GCP's python API is used to transform the data and generate features in BigQuery with a sequence of parallelized queries. Finally, the model is trained in python using the XGBoost package. See ./training/results/1.0 for an extensive analysis including:
+- Model evaluation (PR curve, ROC curve, score distribution, KS-statistic, n_estimators vs metrics, etc.)
+- Model explainability (shapely, PSI/CSI, VIF, WoE/IV, tree-based/permutation importance, correlation)
+- Model calibration (Isotonic regression to make the score output approximate probability of fraud)
+- Bayesian hyperparameter tuning (using the Adaptive Tree Pazen Estimator algorithm) 
+- Model objects
+- Model output scores
+- Logs
+
+This model is then implemented (see https://github.com/sthobbs/fraud-model-serving) as a low-latency streaming job on GCP Dataflow using the Apache Beam Java SDK. Once the streaming job is deployed, this repo also has code to pass raw data to the model serving job (via Pub/Sub) and listen for the results. The features and scores from the Dataflow job are then compared to their BigQuery/python-generated counterparts to ensure the model was implemented correctly. Note that camelCase is often used in python and SQL to match the java pipeline field names in the associated fraud-model-serving repo.
 
 #### Code Structure
 
@@ -21,7 +30,7 @@ This repo contains code to develop an XGBoost fraud detection model. This model 
 - Queries/code to generate model features
 
 ./training
-- Xode for running reproducible machine learning experiments, including:
+- Code for running reproducible machine learning experiments, including:
     - Hyperparameter tuning (using grid search, random search, tpe, or atpe) (with optional cross validation)
     - Model evaluation (PR curve, ROC curve, score distribution, KS-statistic, various tables, etc.)
     - Model explainability (shapely, PSI/CSI, VIF, WoE/IV, permutation feature importance, correlation matrix)
@@ -42,17 +51,17 @@ This repo contains code to develop an XGBoost fraud detection model. This model 
 - A GCP service account, with account key in ./service_account_key.json
 - An environment with the packages in requirements.txt
 
-#### Prerequisits for running develop-model.py
+#### Prerequisits for running validate-serving.py
 - Create Pub/Sub topics/subscriptions for input and output data (added to ./config.py)
 - Deploy Dataflow pipeline from https://github.com/sthobbs/fraud-model-serving
 
 ### Running the code
-first, run develop-model.py to:
+First, run develop-model.py to:
 1. Generate mock data of legitimate and fraudulent activity
 2. Generate features using BigQuery
 3. Train and evaluate a model
 
-next, with the model serving job deployed, run validate-serving.py to:
+Next, with the model serving job deployed, run validate-serving.py to:
 1. Pass raw event data to the Pub/Sub input topic
 2. Receive scored transaction data from the Pub/Sub output subscription
 3. Upload scores to GCS and BigQuery, and process data
