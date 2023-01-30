@@ -1,5 +1,4 @@
 
-# from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
 from config import project_id, dataset_id, query_params

@@ -2,9 +2,7 @@
 # Split BigQuery data into train/validation/test,
 # then move to GCS and local disk
 
-
 from pathlib import Path
-
 from tqdm import tqdm
 from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery

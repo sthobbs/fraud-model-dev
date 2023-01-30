@@ -1,8 +1,5 @@
 
 import data.raw.gen_mock_data
-from config import raw_data_output_dir
-from pathlib import Path
-import os
 from gen_features import gen_profile, upload_raw_data, train_test_split
 from training.xgb_experiment import XGBExperiment
 from utils import run_queries

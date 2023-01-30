@@ -23,7 +23,7 @@ def parallelize_threads(func, param_list):
 
     results = [None] * len(param_list)
 
-    # wrap func to pass return values outside of thread through a  list
+    # wrap func to pass return values outside of thread through a list
     def wrapper(index, **kwargs):
         results[index] = func(**kwargs)
 
