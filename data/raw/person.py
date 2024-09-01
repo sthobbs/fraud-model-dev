@@ -3,7 +3,7 @@ from numpy.random import choice, randint, uniform, normal, exponential
 import random
 import string
 from datetime import datetime, timedelta
-from config import n_distinct_actions, n_customers,  start_date, end_date,\
+from config import n_distinct_actions, n_customers, start_date, end_date,\
     n_legit_recipients, n_fraud_recipients
 
 
@@ -55,7 +55,7 @@ class Person():
         self.home_latitude = normal(self.latitude_mean, self.latitude_std)
         # gender and marital status
         self.gender = choice(['M', 'F'])
-        self.marital_status = choice(['single', 'married', 'divorced'])
+            
         # arbitrarily making defrauded people less likely to be divorced women
         if self.fraud_label == 1 and self.marital_status == 'divorced' \
                 and self.gender == 'F' and uniform() < 0.5:
@@ -91,7 +91,7 @@ class Person():
         Make a session of events, inlcuding transactions, logins, and general actions.
         """
 
-        session_id = ''.join(random.choice(string.ascii_letters) for i in range(10))
+        session_id = ''.join(random.choice(string.ascii_letters) for _ in range(10))
         # random time between start_time and end_time
         event_time = start_datetime + timedelta(seconds=diff_in_seconds * uniform())
         session = []
@@ -135,7 +135,7 @@ class Person():
             'uniqueId': ''.join(random.choice(string.ascii_letters) for i in range(16)),
             'customerId': self.customer_id,
             'sessionId': session_id,
-            'timestamp': str(event_time)[:23], # truncate milliseconds to 3 decimal places
+            'timestamp': str(event_time)[:23],  # truncate milliseconds to 3 decimal places
             'action': action,
         }
         return event

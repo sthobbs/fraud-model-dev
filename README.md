@@ -3,13 +3,13 @@
 This repo contains code to develop an XGBoost fraud detection model. First, raw mock data is generated. Next, GCP's python API is used to transform the data and generate features in BigQuery with a sequence of parallelized queries. Finally, the model is trained in python using the XGBoost package. See ./training/results/1.0 for an extensive analysis including:
 - Model evaluation (PR curve, ROC curve, score distribution, KS-statistic, n_estimators vs metrics, etc.)
 - Model explainability (shapely, PSI/CSI, VIF, WoE/IV, tree-based/permutation importance, correlation)
-- Model calibration (Isotonic regression to make the score output approximate probability of fraud)
-- Bayesian hyperparameter tuning (using the Adaptive Tree Pazen Estimator algorithm) 
+- Model calibration (Isotonic regression to make the score output approximate a probability of fraud)
+- Bayesian hyperparameter tuning (using the Adaptive Tree Parzen Estimator algorithm) 
 - Model objects
 - Model output scores
 - Logs
 
-This model is then implemented (see https://github.com/sthobbs/fraud-model-serving) as a low-latency streaming job on GCP Dataflow using the Apache Beam Java SDK. Once the streaming job is deployed, this repo also has code to pass raw data to the model serving job (via Pub/Sub) and listen for the results. The features and scores from the Dataflow job are then compared to their BigQuery/python-generated counterparts to ensure the model was implemented correctly. Note that camelCase is often used in python and SQL to match the java pipeline field names in the associated fraud-model-serving repo.
+This model is then implemented (see https://github.com/sthobbs/fraud-model-serving) as a low-latency streaming job on GCP Dataflow using the Apache Beam Java SDK. Once the streaming job is deployed, this repo also has code to pass raw data to the model serving job (via Pub/Sub) and listen for the results. The features and scores from the Dataflow job are then compared to their BigQuery/python-generated counterparts to ensure the model was implemented correctly. Note that java convention of camelCase is often used in python and SQL to match the java pipeline field names in the associated fraud-model-serving repo.
 
 #### Code Structure
 
