@@ -3,3 +3,4 @@
 .vscode/*
 .mypy_cache/
 *service_account_key.json
+**/.DS_Store
