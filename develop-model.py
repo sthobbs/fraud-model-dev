@@ -1,6 +1,6 @@
 
 import data.raw.gen_mock_data
-from gen_features import gen_profile, upload_raw_data, train_test_split
+from gen_features import upload_raw_data, gen_profile, train_test_split
 from training.xgb_experiment import XGBExperiment
 from utils import run_queries
 

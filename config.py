@@ -1,6 +1,7 @@
 ###################################
 ##### Mock Data Configuration #####
 ###################################
+
 n_distinct_actions = 10  # number of distinct general actions (e.g. 'action_0')
 n_customers = 500  # number of distinct customers
 n_fraudsters = 100  # number of distinct fraudsters
@@ -14,9 +15,10 @@ raw_data_output_dir = './data/raw/data'  # path to directory where raw mock data
 save_formats = ['json']  # formats to save data in ('csv', 'json', 'json_full')
 seed = 123  # random seed
 
-###################################
+
+#####################################
 ##### Feature Gen Configuration #####
-###################################
+#####################################
 
 project_id = 'analog-arbor-367702'
 dataset_id = 'fraud_detection'
@@ -38,7 +40,10 @@ query_params = {
 }
 
 
-# model serving validation config
+##################################################
+##### Model Serving Validation Configuration #####
+##################################################
+
 input_topic = 'test-input' # python will publish raw data to this topic (dataflow will subscribe)
 output_topic = 'test-output' # dataflow will publish to this topic
 output_subscription = 'test-output-sub' # python will subscribe to this subscription
