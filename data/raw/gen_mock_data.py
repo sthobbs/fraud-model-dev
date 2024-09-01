@@ -28,7 +28,7 @@ def generate_sessions(customers, fraudsters):
 
     print("Generating sessions...")
     sessions = []
-    for i in tqdm(range(n_sessions)):
+    for _ in tqdm(range(n_sessions)):
         # fraud case
         if np.random.uniform() < fraud_session_rate:
             user = np.random.choice(fraudsters)
