@@ -22,6 +22,8 @@ from typing import Union, Optional, Dict, Tuple
 from training.model_evaluate import ModelEvaluate, metric_score
 from training.model_explain import ModelExplain
 from training.model_calibrate import ModelCalibrate
+import warnings
+np.warnings = warnings  # workaround for hyperopt/numpy incompatability
 ProgressBar().register()
 
 
@@ -74,7 +76,8 @@ class Experiment():
 
         # ------ Output Config -------
         self.experiment_dir = Path(self.config["experiment_dir"])
-        self.output_dir = self.experiment_dir / f"{self.version}"
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")  # current datetime
+        self.output_dir = self.experiment_dir / f"{self.version}-{now}"
         self.performance_dir = self.output_dir / self.config["performance_dir"]
         self.model_dir = self.output_dir / self.config["model_dir"]
         self.explain_dir = self.output_dir / self.config["explain_dir"]
@@ -263,7 +266,7 @@ class Experiment():
                 raise ConfigError("performance_increment must be between 0 and 1")
 
         # check that features is a list of length >= 1
-        if type(self.config["features"]) != list or len(self.config["features"]) < 1:
+        if type(self.config["features"]) is not list or len(self.config["features"]) < 1:
             raise ConfigError("features must be a list with len >= 1")
 
         # specify valid supervised and unsupervised models
@@ -857,11 +860,11 @@ class Experiment():
 
         # Instantiate ModelEvaluate object
         datasets = [(self.data[n]['X'], self.data[n]['y'], n) for n in self.dataset_names]
-        self.model_eval = ModelEvaluate(self.model,
-                                        datasets,
-                                        self.performance_dir,
-                                        self.aux_fields,
-                                        self.logger)
+        self.model_eval = ModelEvaluate(model=self.model,
+                                        datasets=datasets,
+                                        output_dir=self.performance_dir,
+                                        aux_fields=self.aux_fields,
+                                        logger=self.logger)
 
         # generate binary classification metrics
         if self.binary_classification:

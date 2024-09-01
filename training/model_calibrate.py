@@ -16,7 +16,13 @@ matplotlib.use('agg')
 
 
 class ModelCalibrate():
-    """Calibrate model so that it outputs a probability."""
+    """
+    Calibrate model so that it outputs a probability.
+
+    Author:
+       Steve Hobbs
+       github.com/sthobbs
+    """
 
     def __init__(self,
                  model: BaseEstimator,
@@ -49,7 +55,7 @@ class ModelCalibrate():
             self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # Set plot context
-        self.plot_context = 'seaborn-darkgrid'
+        self.plot_context = 'seaborn-v0_8-darkgrid'
 
         # Set up logger
         if logger is None:
@@ -148,7 +154,10 @@ class ModelCalibrate():
 
         # Evaluate model on calibrated score and generate performance charts
         datasets = [(y_cal, y, n) for y_cal, (X, y, n) in zip(calibrated_scores, self.datasets)]
-        model_eval = ModelEvaluate(self.calibrator, datasets, performance_dir, logger=self.logger)
+        model_eval = ModelEvaluate(model=self.calibrator,
+                                   datasets=datasets,
+                                   output_dir=performance_dir,
+                                   logger=self.logger)
         model_eval.binary_evaluate(increment)
 
     def _plot_calibration_curve(self,
