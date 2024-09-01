@@ -1,10 +1,12 @@
 
+from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
-from config import project_id, dataset_id, bucket_name, query_params
+from config import project_id, dataset_id, bucket_name, query_params, raw_data_output_dir
 from utils.parallel import parallelize_threads
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from pathlib import Path
 
 # setup logger
 logger = Logger(project_id).logger
@@ -56,10 +58,10 @@ def gen_profile(end_date):
 def run():
     """Generate all monthly customer profiles."""
 
-    # get possible end_date values for query param
+    # get all monthly end_date values for query param
     params = []
-    curr = datetime.strptime(query_params['start_date'], date_format) # current end date
-    end_date = datetime.strptime(query_params['end_date'], date_format) # end date
+    curr = datetime.strptime(query_params['start_date'], date_format)  # current end date
+    end_date = datetime.strptime(query_params['end_date'], date_format)  # end date
     while curr < end_date:
         curr += relativedelta(months=1)
         params.append({'end_date': curr})
@@ -71,11 +73,19 @@ def run():
     t = BigQuery(project_id=project_id,
                  dataset_id=dataset_id,
                  table_id='profile',
-                 schema_json_path=f'./gen_features/schemas/profile.json',
+                 schema_json_path='./gen_features/schemas/profile.json',
                  logger=logger)
-    gcs_uri = f"gs://{bucket_name}/profiles/profile_*json"
+    gcs_uri = f"gs://{bucket_name}/profiles/profile_*.json"
     t.load_from_gcs(gcs_uri, source_format='JSON', partition_field='profileDate')
 
+    # Copy profile from GCS to local machine
+    s = Storage(project_id=project_id, bucket_name=bucket_name, logger=logger)
+    local_dest_dir = Path('./data/profiles')  # path to directory where profile data will be saved
+    local_dest_dir.mkdir(parents=True, exist_ok=True)
+    gcs_src_paths = s.list_blobs(prefix="profiles/profile_")
+    for gcs_src_path in gcs_src_paths:
+        local_dest_path = local_dest_dir / Path(gcs_src_path).name
+        s.download_blob(gcs_src_path, local_dest_path)
 
 
 if __name__ == '__main__':

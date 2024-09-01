@@ -75,7 +75,7 @@ customer_agg AS (
         AVG((SELECT COUNTIF(S.action = 'transaction' AND S.accountType = 'credit_card')
             FROM UNNEST(T.session) S)) AS meanSessionTransactionFromCreditCardCount,
 
-        -- Session transaction count averages (before and including the current transaction)
+        -- Session transaction count standard deviations (before and including the current transaction)
         STDDEV_SAMP((SELECT COUNTIF(S.action = 'transaction')
             FROM UNNEST(T.session) S)) AS stdSessionTransactionCount,
         STDDEV_SAMP((SELECT COUNTIF(S.action = 'transaction' AND S.accountType = 'checking')
