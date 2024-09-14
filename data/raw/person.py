@@ -293,6 +293,6 @@ class Fraudster(Person):
         """Make a session for a fraudster impersonating a legit customer."""
 
         # use random legit customer_id to make session
-        self.customer_id = randint(n_customers)
+        self.customer_id = str(randint(n_customers))
         session = super().make_session()
         return session
