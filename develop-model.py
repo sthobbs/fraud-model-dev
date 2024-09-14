@@ -1,6 +1,6 @@
 
 import data.raw.gen_mock_data
-from gen_features import upload_raw_data, gen_profile, train_test_split
+from training.gen_features import upload_raw_data, gen_profile, train_test_split
 from training.xgb_experiment import XGBExperiment
 from utils import run_queries
 
@@ -17,14 +17,14 @@ def run():
     upload_raw_data.run()
 
     # generate transactions table
-    run_queries.run("./gen_features/sql/format")
+    run_queries.run("./training/gen_features/sql/format")
 
     # generate customer profile table
     gen_profile.run()
 
     # generate features table
-    run_queries.run("./gen_features/sql/features/stage_1")
-    run_queries.run("./gen_features/sql/features/stage_2")
+    run_queries.run("./training/gen_features/sql/features/stage_1")
+    run_queries.run("./training/gen_features/sql/features/stage_2")
 
     # generate train/validation/test data, and download to local disk
     train_test_split.run()
