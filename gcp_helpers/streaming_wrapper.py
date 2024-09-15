@@ -1,8 +1,10 @@
 from gcp_helpers.pubsub import PubSub
 from glob import glob
-import time
 from threading import Thread
+import time
 import os
+import json
+
 
 class StreamingWrapper():
     """
@@ -39,7 +41,7 @@ class StreamingWrapper():
         return wrapper
 
     @non_blocking
-    def slow_stream(self, input_prefix, pubsub_topic, delay=0.1, blocking=False):
+    def slow_stream(self, input_prefix, pubsub_topic, sorted_by=None, delay=0.1, blocking=False):
         """
         Stream events from local files with 'input_prefix' file prefix to 'pubsub_topic',
         with 'delay' seconds between each event.
@@ -62,10 +64,24 @@ class StreamingWrapper():
         # load data from local files and publish to PubSub
         files = glob(f'{input_prefix}*')
         for file in files:
-            with open(file, 'r') as f:
-                for line in f:
-                    s.publish(line)
+            # load based on event order within the file
+            if sorted_by is None:
+                with open(file, 'r') as f:
+                    for line in f:
+                        s.publish(line, block=False)
+                        time.sleep(delay)
+            # load based on sorted_by field
+            else:
+                lines = []
+                with open(file, 'r') as f:
+                    for line in f:
+                        lines.append(line)
+                lines = sorted(lines, key=lambda x: json.loads(x)[sorted_by])
+                for line in lines:
+                    s.publish(line, block=False)
                     time.sleep(delay)
+
+
 
     @non_blocking
     def read_from_pubsub(self, pubsub_subscription, output_file, timeout=None, blocking=False):
@@ -96,10 +112,8 @@ class StreamingWrapper():
         with open(output_file, 'a') as f:
             while True:
                 event = s.received_messages.get()
-                # json.dump(event, f)
-                # print(output_file, event)
+                event = event.replace("'", '"')
                 f.write(event)
                 f.write('\n')
                 f.flush()
                 s.received_messages.task_done()
-
