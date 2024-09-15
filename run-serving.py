@@ -1,6 +1,7 @@
 from serving.score import multithreaded_scoring
 from serving.test_data_event_streamer import stream_test_data
-from config import n_processes, test
+from serving.mongo_setup import run as run_mongo_setup
+from config import n_processes, mongo_setup, test
 import multiprocessing
 
 
@@ -21,6 +22,10 @@ def run():
 
 if __name__ == '__main__':
 
+    # if mongo_setup is True, setup MongoDB prerequisite collections and indexes
+    if mongo_setup:
+        run_mongo_setup()
+        
     # if test is True, stream test raw input data from disk to PubSub and write scored output to disk.
     if test:
         stream_test_data()
