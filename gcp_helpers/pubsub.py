@@ -73,7 +73,7 @@ class PubSub():
                                                                        subscription_id)
         self.publish_exception_count = 0
         self.futures = dict()
-        self.received_messages = queue.Queue()
+        self.received_messages = queue.Queue(maxsize=1000)
         self.encoding = "utf-8"
 
         # set up logger
@@ -168,7 +168,7 @@ class PubSub():
         for response in page_result:
             print(response)
 
-    def publish(self, message):
+    def publish(self, message, block=True):
         """
         Publish a message to the current topic.
 
@@ -186,7 +186,8 @@ class PubSub():
             self.publish_exception_count += 1
             self.logger.warning(f"issue publishing message: {message}, exception: {e}")
             print(f"issue publishing message: {message}, exception: {e}")
-        future.result()
+        if block:
+            future.result()
 
     def publish_with_callback(self, message):
         """
