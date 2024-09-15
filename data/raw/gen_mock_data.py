@@ -6,7 +6,7 @@ import os
 from tqdm import tqdm
 from data.raw.person import Customer, Fraudster
 from config import n_customers, n_fraudsters, n_sessions, \
-    fraud_session_rate, raw_data_output_dir, save_formats, seed
+    fraud_session_rate, raw_data_dir, save_formats, seed
 from pathlib import Path
 
 
@@ -28,7 +28,7 @@ def generate_sessions(customers, fraudsters):
 
     print("Generating sessions...")
     sessions = []
-    for i in tqdm(range(n_sessions)):
+    for _ in tqdm(range(n_sessions)):
         # fraud case
         if np.random.uniform() < fraud_session_rate:
             user = np.random.choice(fraudsters)
@@ -75,7 +75,7 @@ def run():
     Generate mock data and save to disk.
     """
     # generate customers (legit and fraud)
-    customers = [Customer(i) for i in range(n_customers)]
+    customers = [Customer(str(i)) for i in range(n_customers)]
     fraudsters = [Fraudster() for _ in range(n_fraudsters)]
 
     # generate sessions
@@ -88,7 +88,7 @@ def run():
 
     # save to disk
     print("Saving data to disk...")
-    path = Path(raw_data_output_dir)
+    path = Path(raw_data_dir)
     path.mkdir(parents=True, exist_ok=True)
     
     # save to csv

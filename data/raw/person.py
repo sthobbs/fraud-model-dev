@@ -12,7 +12,7 @@ start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
 end_datetime = datetime.strptime(end_date, '%Y-%m-%d')
 diff_in_seconds = (end_datetime - start_datetime).total_seconds()
 
-# mean and stds of relatively rates of customers doing general actions
+# mean and stds of relative rates of customers doing general actions
 fraud_rates = uniform(size=n_distinct_actions)
 fraud_stds = uniform(size=n_distinct_actions)
 legit_rates = uniform(size=n_distinct_actions)
@@ -45,7 +45,6 @@ class Person():
         Make a person.
         """
 
-        self.age = randint(18, 70)
         # login location
         self.longitude_mean = uniform(-130, -75)
         self.longitude_std = uniform(0.1, 2)
@@ -53,13 +52,10 @@ class Person():
         self.latitude_std = uniform(0.1, 2)
         self.home_longitude = normal(self.longitude_mean, self.longitude_std)
         self.home_latitude = normal(self.latitude_mean, self.latitude_std)
-        # gender and marital status
+        # gender and age
         self.gender = choice(['M', 'F'])
-            
-        # arbitrarily making defrauded people less likely to be divorced women
-        if self.fraud_label == 1 and self.marital_status == 'divorced' \
-                and self.gender == 'F' and uniform() < 0.5:
-            self.marital_status = choice(['single', 'married'])
+        self.age = randint(18, 70)
+        self.marital_status = choice(['single', 'married', 'divorced'])
         # account types
         self.account_types = choice(account_types, size=3, p=account_types_rates)
         self.account_types = np.unique(self.account_types)
@@ -297,6 +293,6 @@ class Fraudster(Person):
         """Make a session for a fraudster impersonating a legit customer."""
 
         # use random legit customer_id to make session
-        self.customer_id = randint(n_customers)
+        self.customer_id = str(randint(n_customers))
         session = super().make_session()
         return session

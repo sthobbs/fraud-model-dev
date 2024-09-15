@@ -1,16 +1,18 @@
 import time
+import queue
 from concurrent import futures
 from typing import Callable
 from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from google.cloud import pubsub_v1
 from gcp_helpers.logger import Logger
+from threading import Thread
 
 
 class PubSub():
     """Google Cloud Pub/Sub API helper class"""
 
-    def __init__(self, project_id, topic_id, subscription_id=None, logger=None):
+    def __init__(self, project_id, topic_id=None, subscription_id=None, logger=None):
         """
         Initialize the PubSub class.
 
@@ -39,7 +41,7 @@ class PubSub():
         batch_settings = pubsub_v1.types.BatchSettings(
             max_messages=100,  # default 100
             max_bytes=1000000,  # default 1000000 (~1 MB)
-            max_latency=1,  # default 0.01 (seconds) (10 ms)
+            max_latency=0.01,  # default 0.01 (seconds) (10 ms)
         )
 
         # Configure how many messages the publisher client can hold in memory
@@ -64,13 +66,14 @@ class PubSub():
         # set attributes
         self.project_id = project_id
         self.project_path = f"projects/{project_id}"
-        self.topic_path = self.publisher.topic_path(self.project_id, topic_id)
+        if topic_id:
+            self.topic_path = self.publisher.topic_path(self.project_id, topic_id)
         if subscription_id:
             self.subscription_path = self.subscriber.subscription_path(self.project_id,
                                                                        subscription_id)
         self.publish_exception_count = 0
         self.futures = dict()
-        self.received_messages = []
+        self.received_messages = queue.Queue(maxsize=1000)
         self.encoding = "utf-8"
 
         # set up logger
@@ -165,7 +168,7 @@ class PubSub():
         for response in page_result:
             print(response)
 
-    def publish(self, message):
+    def publish(self, message, block=True):
         """
         Publish a message to the current topic.
 
@@ -182,7 +185,9 @@ class PubSub():
         except Exception as e:
             self.publish_exception_count += 1
             self.logger.warning(f"issue publishing message: {message}, exception: {e}")
-        future.result()
+            print(f"issue publishing message: {message}, exception: {e}")
+        if block:
+            future.result()
 
     def publish_with_callback(self, message):
         """
@@ -204,7 +209,7 @@ class PubSub():
             self.logger.warning(f"issue publishing message: {message}, exception: {e}")
         future.add_done_callback(self.get_callback(future, message))
 
-    def subscribe(self, timeout=10):
+    def subscribe(self, timeout=None, blocking=True):
         """
         Subscribe to the current topic.
 
@@ -214,21 +219,30 @@ class PubSub():
             Timeout in seconds that the subscriber should listen for messages.
             When time is None, result() will block indefinitely (unless an
             exception is encountered).
+        blocking : bool
+            If True, block until the subscriber times out or errors.
         """
 
-        self.logger.info(f"Subscribing to topic: {self.topic_path}")
+        self.logger.info(f"Subscribing to subscription: {self.subscription_path}")
         future = self.subscriber.subscribe(self.subscription_path,
                                            callback=self.subscriber_callback)
 
-        # Wrap subscriber in a 'with' block to automatically call close() when done.
-        with self.subscriber:
-            try:
-                future.result(timeout=timeout)
-            except (KeyboardInterrupt, futures._base.TimeoutError):
-                future.cancel()  # Trigger the shutdown.
-                future.result()  # Block until the shutdown is complete.
-        return self.received_messages
+        # # Wrap subscriber in a 'with' block to automatically call close() when done.
+        # with self.subscriber:
+        if blocking:
+            self._subscriber_block(future=future, timeout=timeout)
+        else:
+            t = Thread(target=self._subscriber_block, args=(future, timeout))
+            t.start()
+            # return self.received_messages
 
+    def _subscriber_block(self, future, timeout=None):
+        try:
+            future.result(timeout=timeout)
+        except (KeyboardInterrupt, futures._base.TimeoutError):
+            future.cancel()  # Trigger the shutdown.
+            future.result()  # Block until the shutdown is complete.
+        
     def subscriber_callback(self, message):
         """
         Callback for subscriber.
@@ -241,7 +255,7 @@ class PubSub():
 
         data = message.data.decode(self.encoding)
         # self.logger.info(f"Received message: {data}")
-        self.received_messages.append(data)
+        self.received_messages.put(data)
         message.ack()
 
     def get_callback(self,

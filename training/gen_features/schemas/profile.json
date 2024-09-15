@@ -1,0 +1,249 @@
+[
+    {
+        "name": "profileDate",
+        "type": "DATE",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "customerId",
+        "type": "STRING",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "amountMin",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountMax",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountAvg",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountStd",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountPercentile10",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountPercentile25",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountPercentile50",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountPercentile75",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "amountPercentile90",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSecondsToTransaction",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSecondsToTransaction",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "sessionCount",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "transactionCount",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionActionCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction0Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction1Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction2Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction3Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction4Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction5Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction6Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction7Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction8Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionAction9Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionActionCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction0Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction1Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction2Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction3Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction4Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction5Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction6Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction7Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction8Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionAction9Count",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionTransactionCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionTransactionFromCheckingCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionTransactionFromSavingsCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "meanSessionTransactionFromCreditCardCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionTransactionCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionTransactionFromCheckingCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionTransactionFromSavingsCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "stdSessionTransactionFromCreditCardCount",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "recipients",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+            {
+                "name": "recipient",
+                "type": "STRING",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "txnCnt",
+                "type": "INTEGER",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "minTimestamp",
+                "type": "DATETIME",
+                "mode": "NULLABLE"
+            }
+        ]
+    }
+]

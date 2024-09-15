@@ -2,7 +2,7 @@
 from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
-from config import project_id, dataset_id, bucket_name, query_params, raw_data_output_dir
+from config import project_id, dataset_id, bucket_name, query_params
 from utils.parallel import parallelize_threads
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -34,7 +34,7 @@ def gen_profile(end_date):
     cur_query_params['end_date'] = end_date.strftime(date_format)
 
     # get query from file and pass in query parameters
-    query_path = "./gen_features/sql/profile/gen_profile.sql"
+    query_path = "./training/gen_features/sql/profile/gen_profile.sql"
     with open(query_path, 'r') as file:
         query = file.read().format(**cur_query_params)
 
@@ -73,7 +73,7 @@ def run():
     t = BigQuery(project_id=project_id,
                  dataset_id=dataset_id,
                  table_id='profile',
-                 schema_json_path='./gen_features/schemas/profile.json',
+                 schema_json_path='./training/gen_features/schemas/profile.json',
                  logger=logger)
     gcs_uri = f"gs://{bucket_name}/profiles/profile_*.json"
     t.load_from_gcs(gcs_uri, source_format='JSON', partition_field='profileDate')

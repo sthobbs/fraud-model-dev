@@ -4,7 +4,13 @@ import xgboost as xgb
 
 
 class XGBExperiment(Experiment):
-    """Class for training and evaluating XGBoost models"""
+    """
+    Class for training and evaluating XGBoost models
+
+    Author:
+       Steve Hobbs
+       github.com/sthobbs
+    """
 
     def __init__(self, config_path: str) -> None:
         """
@@ -63,8 +69,9 @@ class XGBExperiment(Experiment):
 
         # save pickle version
         super().save_model()
-        # save binary version
-        self.model.save_model(self.model_dir/'model.bin')
+        # save json and binary binary versions
+        self.model.save_model(self.model_dir/'model.json')
+        self.model.save_model(self.model_dir/'model.ubj')
 
     def evaluate(self, increment: float = 0.01) -> None:
         """Evaluate XGboost model and generate performance charts."""
