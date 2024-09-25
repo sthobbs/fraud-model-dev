@@ -65,7 +65,7 @@ model_id = 'txn_model.v2'                                 # model id specified i
 test_data_input_path = f"{raw_data_dir}/events.json"              # path to test input data
 test_data_output_path = f"{scored_data_dir}/serving_scores.json"  # path to scored output test data
 event_streamer_delay = 0.001                                      # delay in seconds between events
-pause_before_feature_gen = 0.5                                    # delay in seconds to give MongoDB time to process events
+pause_before_feature_gen = 0                                    # delay in seconds to give MongoDB time to process events
 
 # MongoDB configuration
 mongo_client_uri = "mongodb://localhost:27017/"  # MongoDB connection string

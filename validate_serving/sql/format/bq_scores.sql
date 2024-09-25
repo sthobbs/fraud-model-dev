@@ -10,8 +10,8 @@ Query parameters:
 
 
 SELECT
-    S.score,
+    BQ.score,
     F.*,
-FROM `{project_id}.{dataset_id}.bq_scores_raw` S
+FROM `{project_id}.{dataset_id}.bq_scores_raw` BQ
 INNER JOIN `{project_id}.{dataset_id}.features_test` F
-ON S.uniqueId = F.uniqueId
+ON BQ.uniqueId = F.uniqueId

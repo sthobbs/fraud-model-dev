@@ -1,11 +1,12 @@
 
 # This script uploads score event data, generated from both
-# BigQuery/Python and Dataflow, to GCS and BigQuery.
+# training (Python/BigQuery) and serving (Python/MongoDB),
+# to GCS and BigQuery.
 
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.storage import Storage
 from gcp_helpers.logger import Logger
-from config import project_id, dataset_id, bucket_name
+from config import project_id, dataset_id, bucket_name, model_exp_dir, scored_data_dir
 from utils.parallel import parallelize_threads
 
 # setup logger
@@ -49,17 +50,17 @@ def run():
    
     # get params for parallelization
     params = [
-        { # BQ scores
-            'local_path': "training/results/1.0/scores/test_scores.csv",
+        { # Training
+            'local_path': f"{model_exp_dir}/scores/test_scores.csv",
             'gcs_path': 'BQ_scores_raw_test_data.csv',
             'table_id': 'bq_scores_raw',
             'schema_path': './validate_serving/schemas/bq_scores_raw.json'
         },
-        { # DF scores
-            'local_path': "data/scores/df_scores_raw.json",
-            'gcs_path': 'df_scores_raw.json',
-            'table_id': 'df_scores_raw',
-            'schema_path': './validate_serving/schemas/df_scores_raw.json'
+        { # Serving
+            'local_path': f"{scored_data_dir}/serving_scores.json",
+            'gcs_path': 'serving_scores_raw.json',
+            'table_id': 'serving_scores_raw',
+            'schema_path': './validate_serving/schemas/serving_scores_raw.json'
         }
     ]
 
