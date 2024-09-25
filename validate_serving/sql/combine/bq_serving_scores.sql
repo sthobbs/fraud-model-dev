@@ -12,7 +12,7 @@ Query parameters:
 
 SELECT
     BQ.*,
-    DF.* EXCEPT (
+    S.* EXCEPT (
         fraudLabel,
         uniqueId,
         customerId,
@@ -23,5 +23,5 @@ SELECT
         modelId
     ),
 FROM `{project_id}.{dataset_id}.bq_scores` BQ
-FULL OUTER JOIN `{project_id}.{dataset_id}.df_scores` DF
-ON BQ.uniqueId = DF.uniqueId
+FULL OUTER JOIN `{project_id}.{dataset_id}.serving_scores` S
+ON BQ.uniqueId = S.uniqueId
