@@ -1,6 +1,7 @@
 
 from gcp_helpers.streaming_wrapper import StreamingWrapper
-from config import raw_data_dir, scored_data_dir, project_id, input_topic, output_subscription
+from config import project_id, input_topic, output_subscription, \
+    test_data_input_path, test_data_output_path, event_streamer_delay
 
 
 def stream_test_data():
@@ -11,10 +12,11 @@ def stream_test_data():
     event_streamer = StreamingWrapper(project_id=project_id)
 
     # startly slowly streaming raw data from disk to pubsub (in a separate thread)
-    event_streamer.slow_stream(input_prefix=f"{raw_data_dir}/events_sample.json",
+    event_streamer.slow_stream(input_prefix=test_data_input_path,
                                pubsub_topic=input_topic,
-                               delay=0.1)
+                               sorted_by='timestamp',
+                               delay=event_streamer_delay)
 
     # start listening for output scored events from pubsub and write to disk (in a separate thread)
     event_streamer.read_from_pubsub(pubsub_subscription=output_subscription,
-                                    output_file=f"{scored_data_dir}/serving_scores_raw.json")
+                                    output_file=test_data_output_path)

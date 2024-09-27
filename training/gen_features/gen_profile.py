@@ -2,7 +2,7 @@
 from gcp_helpers.storage import Storage
 from gcp_helpers.bigquery import BigQuery
 from gcp_helpers.logger import Logger
-from config import project_id, dataset_id, bucket_name, query_params
+from config import project_id, dataset_id, bucket_name, query_params, profile_dir
 from utils.parallel import parallelize_threads
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -80,7 +80,7 @@ def run():
 
     # Copy profile from GCS to local machine
     s = Storage(project_id=project_id, bucket_name=bucket_name, logger=logger)
-    local_dest_dir = Path('./data/profiles')  # path to directory where profile data will be saved
+    local_dest_dir = Path(profile_dir)  # path to directory where profile data will be saved
     local_dest_dir.mkdir(parents=True, exist_ok=True)
     gcs_src_paths = s.list_blobs(prefix="profiles/profile_")
     for gcs_src_path in gcs_src_paths:
